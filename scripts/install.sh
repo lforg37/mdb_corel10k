@@ -8,9 +8,9 @@ cd scratch
 #Getting the JAR for lire indexing
 wget https://github.com/dermotte/liresolr/releases/download/v6.3.0-beta.2/lire.jar
 wget https://github.com/dermotte/liresolr/releases/download/v6.3.0-beta.2/liresolr.jar
-wget http://mirror.softaculous.com/apache//commons/codec/binaries/commons-codec-1.10-bin.zip
+wget http://mirror.softaculous.com/apache/commons/codec/binaries/commons-codec-1.10-bin.zip
 unzip commons-codec-1.10-bin.zip
-mv commons-codec-1.10/commons-codec-1.10.jar ..
+mv commons-codec-1.10/commons-codec-1.10.jar .
 rm -r *.zip commons-codec-1.10
 SCRATCH_DIR=$PWD
 
@@ -29,11 +29,11 @@ wget -i urls.txt -P ${INSTALL_DIR}
 cd ${INSTALL_DIR}
 
 #Computing the index
-java -cp ${SCRATCH_DIR}/lire.jar:${SCRATCH_DIR}/liresolr.jar:${SCRATCH_DIR}/commons-codec-1.10.jar net.semanticmetadata.lire.solr.indexing.ParallelSolrIndexer -i image_list.txt -o ${SCRATCH_DIR}/index.xml
+java -cp "${SCRATCH_DIR}/lire.jar:${SCRATCH_DIR}/liresolr.java:${SCRATCH_DIR}/commons-codec-1.10.jar" net.semanticmetadata.lire.solr.indexing.ParallelSolrIndexer -i image_list.txt -o ${SCRATCH_DIR}/index.xml
 
 PING_URL='http://lireserv:8983/solr/admin/ping'
 
-until test "$(curl -s -o /dev/null -w \"%{http_code}\" ${PING_URL})" -eq "200"
+until test "$(curl -s -o /dev/null -w \"%{http_code}\" ${PING_URL})" = "200"
 do
 	sleep 5
 done
