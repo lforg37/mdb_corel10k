@@ -13,9 +13,17 @@ unzip commons-codec-1.10-bin.zip
 mv commons-codec-1.10/commons-codec-1.10.jar .
 rm -r *.zip commons-codec-1.10
 SCRATCH_DIR=$PWD
+
+if test -f urls.txt ; then
+	rm urls.txt
+fi
 touch urls.txt
 
 #getting all images
+if test -f "${INSTALL_DIR}/image_list.txt" ; then
+	rm "${INSTALL_DIR}/image_list.txt"
+fi
+
 touch "${INSTALL_DIR}/image_list.txt"
 for i in $(seq 1 10000)
 do
