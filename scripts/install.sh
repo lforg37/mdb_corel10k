@@ -13,6 +13,7 @@ unzip commons-codec-1.10-bin.zip
 mv commons-codec-1.10/commons-codec-1.10.jar .
 rm -r *.zip commons-codec-1.10
 SCRATCH_DIR=$PWD
+touch urls.txt
 
 #getting all images
 echo "" > "${INSTALL_DIR}/image_list.txt"
