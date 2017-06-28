@@ -29,12 +29,16 @@ wget -i urls.txt -P ${INSTALL_DIR}
 cd ${INSTALL_DIR}
 
 #Computing the index
-java -cp "${SCRATCH_DIR}/lire.jar:${SCRATCH_DIR}/liresolr.java:${SCRATCH_DIR}/commons-codec-1.10.jar" net.semanticmetadata.lire.solr.indexing.ParallelSolrIndexer -i image_list.txt -o ${SCRATCH_DIR}/index.xml
+${SCRATCH_DIR}/lire.jar:${SCRATCH_DIR}/liresolr.jar:${SCRATCH_DIR}/commons-codec-1.10.jar
+java -cp ${SCRATCH_DIR}/lire.jar:${SCRATCH_DIR}/liresolr.jar:${SCRATCH_DIR}/commons-codec-1.10.jar net.semanticmetadata.lire.solr.indexing.ParallelSolrIndexer -i image_list.txt -o ${SCRATCH_DIR}/index.xml
 
 PING_URL='http://lireserv:8983/solr/admin/ping'
 
+echo "LIRE Index computed"
+
 until test "$(curl -s -o /dev/null -w \"%{http_code}\" ${PING_URL})" = "200"
 do
+	echo "Solr server not reachable, a new attempt will be made in a few seconds"
 	sleep 5
 done
 
