@@ -15,9 +15,10 @@ rm -r *.zip commons-codec-1.10
 SCRATCH_DIR=$PWD
 
 #getting all images
+echo "" > "${INSTALL_DIR}/image_list.txt"
 for i in $(seq 1 10000)
 do
-	if [ ! -f "${INSTALL_DIR}/${i}.jpg"] ; then
+	if test ! -f "${INSTALL_DIR}/${i}.jpg" ; then
 		echo "${COREL_URL}${i}.jpg" >> urls.txt
 	fi
 	echo "${i}.jpg" >> "${INSTALL_DIR}/image_list.txt"
@@ -32,7 +33,7 @@ java -cp ${SCRATCH_DIR}/lire.jar:${SCRATCH_DIR}/liresolr.jar:${SCRATCH_DIR}/comm
 
 PING_URL='http://lireserv:8983/solr/admin/ping'
 
-until [[ "$(curl -s -o /dev/null -w \"%{http_code}\" ${PING_URL})" = "200" ]]
+until test "$(curl -s -o /dev/null -w \"%{http_code}\" ${PING_URL})" -eq "200"
 do
 	sleep 5
 done
