@@ -40,11 +40,9 @@ cd ${INSTALL_DIR}
 #Computing the index
 java -cp ${SCRATCH_DIR}/lire.jar:${SCRATCH_DIR}/liresolr.jar:${SCRATCH_DIR}/commons-codec-1.10.jar net.semanticmetadata.lire.solr.indexing.ParallelSolrIndexer -i image_list.txt -o ${SCRATCH_DIR}/index.xml
 
-PING_URL='http://lireserv:8983/solr/admin/ping'
-
 echo "LIRE Index computed"
 
-until test "$(curl -s -o /dev/null -w \"%{http_code}\" ${PING_URL})" = "200"
+until ping -c 1 lireserv:8983
 do
 	echo "Solr server not reachable, a new attempt will be made in a few seconds"
 	sleep 5
@@ -53,7 +51,7 @@ done
 cd $SCRATCH_DIR
 
 # Upload the index to Solr
-curl http://localhost:8983/solr/lire/update -H "Content-Type: text/xml" --data-binary "<delete><query>*:*</query></delete>"
-curl http://localhost:8983/solr/lire/update -H "Content-Type: text/xml" --data-binary @index.xml
-curl http://localhost:8983/solr/lire/update -H "Content-Type: text/xml" --data-binary "<commit/>"
+curl http://lireserv:8983/solr/lire/update -H "Content-Type: text/xml" --data-binary "<delete><query>*:*</query></delete>"
+curl http://lireserv:8983/solr/lire/update -H "Content-Type: text/xml" --data-binary @index.xml
+curl http://lireserv:8983/solr/lire/update -H "Content-Type: text/xml" --data-binary "<commit/>"
 
