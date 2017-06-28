@@ -16,7 +16,7 @@ SCRATCH_DIR=$PWD
 touch urls.txt
 
 #getting all images
-echo "" > "${INSTALL_DIR}/image_list.txt"
+touch "${INSTALL_DIR}/image_list.txt"
 for i in $(seq 1 10000)
 do
 	if test ! -f "${INSTALL_DIR}/${i}.jpg" ; then
